@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Safiri - Live Inventory</title>
+    <style>
+      :root {
+        --primary: #0f766e;
+        --primary-dark: #115e59;
+        --accent: #f59e0b;
+        --bg-light: #f8fafc;
+        --text-main: #334155;
+        --radius: 12px;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+      body { background: var(--bg-light); color: var(--text-main); line-height: 1.6; }
+      header { background: #fff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; padding: 1rem 5%; }
+      .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none; }
+      .nav-right { margin-left: auto; display: flex; align-items: center; gap: 1.25rem; }
+      .nav-right a { text-decoration: none; font-weight: 500; font-size: 0.95rem; color: var(--text-main); }
+      .nav-right .btn-auth { background: var(--primary); color: #fff; padding: 0.5rem 1.1rem; border-radius: 8px; font-weight: 600; }
+
+      .wrap { max-width: 1200px; margin: 0 auto; padding: 2rem 5% 4rem; }
+      .demo-banner { display: none; background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; padding: 0.6rem 1rem; border-radius: 8px; font-size: 0.85rem; margin-bottom: 1rem; }
+
+      /* Location + route bar */
+      .bar { background: #fff; border-radius: var(--radius); box-shadow: 0 4px 6px rgba(0,0,0,.05); border: 1px solid #e2e8f0; padding: 1.25rem 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end; }
+      .bar label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; }
+      .bar select { width: 100%; padding: 0.7rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; background: #fff; }
+      .btn-ghost { background: #ccfbf1; color: var(--primary); border: none; border-radius: 8px; padding: 0.7rem 1rem; font-weight: 600; cursor: pointer; width: 100%; }
+      .btn-ghost:hover { background: #99f6e4; }
+      .loc-note { font-size: 0.8rem; color: #64748b; margin-top: 0.5rem; grid-column: 1 / -1; }
+
+      .layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem; margin-top: 2rem; align-items: start; }
+      @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+      .list-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 1rem; }
+      .list-head h2 { font-size: 1.4rem; }
+      .list-head select { padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 8px; }
+      .live { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--primary); font-weight: 600; }
+      .live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 1.6s infinite; }
+      @keyframes pulse { 50% { opacity: .3; } }
+
+      .v-card { background: #fff; border: 2px solid #e2e8f0; border-radius: var(--radius); padding: 1.1rem 1.25rem; margin-bottom: 1rem; cursor: pointer; transition: border-color .15s, transform .15s; }
+      .v-card:hover { transform: translateY(-2px); }
+      .v-card.active { border-color: var(--primary); }
+      .v-top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+      .v-top h3 { font-size: 1.05rem; }
+      .price { font-weight: 700; color: var(--primary); font-size: 1.1rem; white-space: nowrap; }
+      .v-meta { font-size: 0.85rem; color: #64748b; margin-top: 0.2rem; }
+      .badge { display: inline-block; background: #ccfbf1; color: var(--primary); padding: 0.15rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-top: 0.5rem; }
+      .badge.low { background: #fee2e2; color: #b91c1c; }
+      .empty { background: #fff; border: 1px dashed #cbd5e1; border-radius: var(--radius); padding: 2rem; text-align: center; color: #64748b; }
+
+      /* Seat map */
+      .seat-panel { background: #fff; border: 1px solid #e2e8f0; border-radius: var(--radius); padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,.05); position: sticky; top: 5rem; }
+      .seat-panel h2 { font-size: 1.2rem; margin-bottom: 0.25rem; }
+      .seat-panel .sub { font-size: 0.85rem; color: #64748b; margin-bottom: 1rem; }
+      .van { width: 240px; margin: 0 auto; border: 3px solid #94a3b8; border-radius: 40px 40px 18px 18px; padding: 1.4rem 1rem 1rem; background: #f1f5f9; position: relative; }
+      .van::before { content: "FRONT"; position: absolute; top: 0.35rem; left: 50%; transform: translateX(-50%); font-size: 0.65rem; letter-spacing: .15em; color: #94a3b8; font-weight: 700; }
+      .van-row { display: grid; grid-template-columns: 1fr 1fr 0.5fr 1fr; gap: 0.5rem; margin-bottom: 0.55rem; }
+      .van-row.back { grid-template-columns: repeat(4, 1fr); }
+      .seat { aspect-ratio: 1; border-radius: 8px 8px 4px 4px; border: 2px solid var(--primary); background: #fff; color: var(--primary); font-weight: 700; font-size: 0.85rem; cursor: pointer; }
+      .seat:hover:not(:disabled) { background: #ccfbf1; }
+      .seat.selected { background: var(--accent); border-color: #d97706; color: #fff; }
+      .seat:disabled { background: #cbd5e1; border-color: #94a3b8; color: #64748b; cursor: not-allowed; }
+      .driver { aspect-ratio: 1; border-radius: 50%; background: #475569; color: #fff; display: grid; place-items: center; font-size: 0.6rem; font-weight: 700; }
+      .spacer { visibility: hidden; }
+      .legend { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; font-size: 0.78rem; flex-wrap: wrap; }
+      .legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 0.35rem; vertical-align: -1px; border: 2px solid var(--primary); background: #fff; }
+      .legend .l-sel::before { background: var(--accent); border-color: #d97706; }
+      .legend .l-bk::before { background: #cbd5e1; border-color: #94a3b8; }
+      .summary { border-top: 1px solid #e2e8f0; margin-top: 1.25rem; padding-top: 1rem; font-size: 0.95rem; }
+      .summary strong { color: var(--primary); }
+      .btn-book { background: var(--primary); color: #fff; border: none; padding: 0.8rem; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 0.75rem; font-size: 1rem; }
+      .btn-book:hover { background: var(--primary-dark); }
+      .btn-book:disabled { background: #94a3b8; cursor: not-allowed; }
+      .placeholder { text-align: center; color: #64748b; padding: 2rem 0; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="logo">Safiri</a>
+      <div class="nav-right">
+        <a href="#">Print Ticket</a>
+        <a href="#" class="btn-auth">Login / Sign Up</a>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <div class="demo-banner" id="demoBanner">
+        Showing demo data. Set <code>API_BASE</code> in this file to your backend to see live inventory.
+      </div>
+
+      <div class="bar">
+        <div>
+          <label for="fromCity">I'm currently in</label>
+          <select id="fromCity"></select>
+        </div>
+        <div>
+          <label for="toCity">Going to</label>
+          <select id="toCity"></select>
+        </div>
+        <div>
+          <button class="btn-ghost" id="detectBtn" type="button">📍 Detect my city</button>
+        </div>
+        <div class="loc-note" id="locNote"></div>
+      </div>
+
+      <div class="layout">
+        <section>
+          <div class="list-head">
+            <div>
+              <h2 id="routeTitle">Vehicles</h2>
+              <span class="live">Live inventory</span>
+            </div>
+            <select id="sortBy" aria-label="Sort vehicles">
+              <option value="time">Earliest departure</option>
+              <option value="price">Lowest price</option>
+              <option value="seats">Most seats left</option>
+            </select>
+          </div>
+          <div id="vehicleList"></div>
+        </section>
+
+        <aside class="seat-panel" id="seatPanel"></aside>
+      </div>
+    </div>
+
+    <script>
+      /* ===================== CONFIG ===================== */
+      // Point this at your backend, e.g. "https://yourdomain.com/api".
+      // Leave empty to use built-in demo data.
+      const API_BASE = "";
+      const REFRESH_MS = 10000;
+
+      // Used for "Detect my city" (nearest match). Add your own cities.
+      const CITIES = [
+        { name: "Nairobi", lat: -1.2921, lng: 36.8219 },
+        { name: "Mombasa", lat: -4.0435, lng: 39.6682 },
+        { name: "Kisumu", lat: -0.0917, lng: 34.768 },
+        { name: "Nakuru", lat: -0.3031, lng: 36.08 },
+        { name: "Eldoret", lat: 0.5143, lng: 35.2698 },
+        { name: "Malindi", lat: -3.2192, lng: 40.1169 },
+        { name: "Arusha", lat: -3.3869, lng: 36.683 },
+      ];
+
+      // 14-seater van layout (front at top; driver on the right).
+      // number = seat, "D" = driver, null = aisle gap. 14 passenger seats total.
+      const LAYOUT = [
+        [1, null, null, "D"],
+        [2, 3, null, 4],
+        [5, 6, null, 7],
+        [8, 9, null, 10],
+        [11, 12, 13, 14],
+      ];
+
+      /* ===================== STATE ===================== */
+      const params = new URLSearchParams(location.search);
+      const state = {
+        from: params.get("from") || store("safiri_city") || "Nairobi",
+        to: params.get("to") || "Mombasa",
+        vehicles: [],
+        activeId: null,
+        selected: new Set(),
+        usingDemo: false,
+      };
+
+      const $ = (id) => document.getElementById(id);
+      function store(k, v) {
+        try {
+          if (v === undefined) return localStorage.getItem(k);
+          localStorage.setItem(k, v);
+        } catch (e) { return null; }
+      }
+      const ksh = (n) => "KSh " + Number(n).toLocaleString("en-KE");
+
+      /* ===================== DATA ===================== */
+      /* Expected API:
+         GET {API_BASE}/cities   -> ["Nairobi","Mombasa",...]            (optional)
+         GET {API_BASE}/vehicles?from=Nairobi&to=Mombasa
+           -> [{ id, plate, type, from_city, to_city, departure_time (ISO),
+                 price, seats_total, booked_seats: [1,4,9] }]
+      */
+      async function loadVehicles() {
+        if (API_BASE) {
+          try {
+            const url = `${API_BASE}/vehicles?from=${encodeURIComponent(state.from)}&to=${encodeURIComponent(state.to)}`;
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(res.status);
+            state.vehicles = await res.json();
+            state.usingDemo = false;
+            return;
+          } catch (e) {
+            console.warn("API failed, using demo data:", e);
+          }
+        }
+        state.usingDemo = true;
+        state.vehicles = demoVehicles();
+      }
+
+      function demoVehicles() {
+        const base = new Date();
+        base.setHours(6, 0, 0, 0);
+        const mk = (i, plate, type, hour, price, booked) => {
+          const d = new Date(base);
+          d.setHours(hour, i % 2 ? 30 : 0);
+          return { id: i, plate, type, from_city: state.from, to_city: state.to, departure_time: d.toISOString(), price, seats_total: 14, booked_seats: booked };
+        };
+        return [
+          mk(1, "KDA 214X", "14-Seater Van", 7, 1500, [1, 2, 5, 6, 7, 11]),
+          mk(2, "KCT 880M", "14-Seater Van", 9, 1600, [3, 4, 8, 9, 10, 12, 13]),
+          mk(3, "KDG 051P", "14-Seater Van", 12, 1450, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]),
+          mk(4, "KDB 733L", "14-Seater Van", 15, 1500, [14]),
+        ];
+      }
+
+      /* ===================== RENDER: LIST ===================== */
+      function sortedVehicles() {
+        const by = $("sortBy").value;
+        const left = (v) => v.seats_total - v.booked_seats.length;
+        return [...state.vehicles].sort((a, b) =>
+          by === "price" ? a.price - b.price :
+          by === "seats" ? left(b) - left(a) :
+          new Date(a.departure_time) - new Date(b.departure_time)
+        );
+      }
+
+      function renderList() {
+        $("demoBanner").style.display = state.usingDemo ? "block" : "none";
+        $("routeTitle").textContent = `${state.from} → ${state.to}`;
+        const list = $("vehicleList");
+        if (!state.vehicles.length) {
+          list.innerHTML = `<div class="empty">No vehicles available from ${state.from} to ${state.to} right now.</div>`;
+          return;
+        }
+        list.innerHTML = "";
+        sortedVehicles().forEach((v) => {
+          const left = v.seats_total - v.booked_seats.length;
+          const time = new Date(v.departure_time).toLocaleTimeString("en-KE", { hour: "2-digit", minute: "2-digit" });
+          const card = document.createElement("div");
+          card.className = "v-card" + (v.id === state.activeId ? " active" : "");
+          card.innerHTML = `
+            <div class="v-top"><h3>${v.type}</h3><div class="price">${ksh(v.price)}</div></div>
+            <div class="v-meta">${v.plate} • Departs ${time}</div>
+            <span class="badge ${left <= 3 ? "low" : ""}">${left === 0 ? "Fully booked" : left + " seats left"}</span>`;
+          card.onclick = () => {
+            if (state.activeId !== v.id) state.selected.clear();
+            state.activeId = v.id;
+            renderList();
+            renderSeats();
+          };
+          list.appendChild(card);
+        });
+      }
+
+      /* ===================== RENDER: SEAT MAP ===================== */
+      function renderSeats() {
+        const panel = $("seatPanel");
+        const v = state.vehicles.find((x) => x.id === state.activeId);
+        if (!v) {
+          panel.innerHTML = `<div class="placeholder">Select a vehicle to see its seat layout.</div>`;
+          return;
+        }
+        // drop selections that were booked by someone else since last refresh
+        state.selected.forEach((s) => v.booked_seats.includes(s) && state.selected.delete(s));
+
+        const rows = LAYOUT.map((row, i) => {
+          const cells = row.map((c) => {
+            if (c === "D") return `<div class="driver">DRIVER</div>`;
+            if (c === null) return `<div class="spacer"></div>`;
+            const booked = v.booked_seats.includes(c);
+            const sel = state.selected.has(c);
+            return `<button class="seat ${sel ? "selected" : ""}" data-seat="${c}" ${booked ? "disabled" : ""} aria-label="Seat ${c}${booked ? " booked" : ""}">${c}</button>`;
+          }).join("");
+          return `<div class="van-row ${i === LAYOUT.length - 1 ? "back" : ""}">${cells}</div>`;
+        }).join("");
+
+        const seats = [...state.selected].sort((a, b) => a - b);
+        panel.innerHTML = `
+          <h2>${v.plate}</h2>
+          <div class="sub">${v.type} • ${state.from} → ${state.to}</div>
+          <div class="van">${rows}</div>
+          <div class="legend"><span>Available</span><span class="l-sel">Selected</span><span class="l-bk">Booked</span></div>
+          <div class="summary">
+            Seats: <strong>${seats.length ? seats.join(", ") : "none selected"}</strong><br />
+            Total: <strong>${ksh(seats.length * v.price)}</strong>
+          </div>
+          <button class="btn-book" id="payBtn" ${seats.length ? "" : "disabled"}>Continue to Payment</button>`;
+
+        panel.querySelectorAll(".seat:not(:disabled)").forEach((b) => {
+          b.onclick = () => {
+            const n = Number(b.dataset.seat);
+            state.selected.has(n) ? state.selected.delete(n) : state.selected.add(n);
+            renderSeats();
+          };
+        });
+        $("payBtn").onclick = () => {
+          // Hook this up to your payment flow (e.g. M-Pesa STK push).
+          alert(`Booking ${seats.length} seat(s): ${seats.join(", ")} on ${v.plate}.\nTotal ${ksh(seats.length * v.price)}`);
+        };
+      }
+
+      /* ===================== LOCATION ===================== */
+      function fillCitySelects() {
+        const opts = CITIES.map((c) => `<option>${c.name}</option>`).join("");
+        $("fromCity").innerHTML = opts;
+        $("toCity").innerHTML = opts;
+        $("fromCity").value = state.from;
+        $("toCity").value = state.to;
+      }
+
+      function nearestCity(lat, lng) {
+        let best = null, bestD = Infinity;
+        CITIES.forEach((c) => {
+          const d = (c.lat - lat) ** 2 + (c.lng - lng) ** 2;
+          if (d < bestD) { bestD = d; best = c; }
+        });
+        return best.name;
+      }
+
+      function detectCity() {
+        if (!navigator.geolocation) { $("locNote").textContent = "Location isn't supported on this device. Please choose your city manually."; return; }
+        $("locNote").textContent = "Detecting your location…";
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const city = nearestCity(pos.coords.latitude, pos.coords.longitude);
+            $("fromCity").value = city;
+            $("locNote").textContent = `Nearest Safiri city: ${city}.`;
+            changeRoute();
+          },
+          () => { $("locNote").textContent = "Couldn't get your location. Please choose your city manually."; },
+          { timeout: 8000 }
+        );
+      }
+
+      async function changeRoute() {
+        state.from = $("fromCity").value;
+        state.to = $("toCity").value;
+        store("safiri_city", state.from);
+        state.activeId = null;
+        state.selected.clear();
+        history.replaceState(null, "", `?from=${encodeURIComponent(state.from)}&to=${encodeURIComponent(state.to)}`);
+        await refresh();
+        renderSeats();
+      }
+
+      /* ===================== INIT ===================== */
+      async function refresh() {
+        await loadVehicles();
+        renderList();
+        if (state.activeId) renderSeats();
+      }
+
+      fillCitySelects();
+      $("fromCity").onchange = changeRoute;
+      $("toCity").onchange = changeRoute;
+      $("sortBy").onchange = renderList;
+      $("detectBtn").onclick = detectCity;
+      renderSeats();
+      refresh();
+      setInterval(refresh, REFRESH_MS);
+    </script>
+  </body>
+</html>
