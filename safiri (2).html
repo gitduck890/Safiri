@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Safiri - Fast & Easy Self-Service Booking</title>
+    <style>
+      :root {
+        --primary: #0f766e;
+        --primary-dark: #115e59;
+        --accent: #f59e0b;
+        --bg-light: #f8fafc;
+        --text-main: #334155;
+        --radius: 12px;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background-color: var(--bg-light);
+        color: var(--text-main);
+        line-height: 1.6;
+      }
+
+      /* Navigation */
+      header {
+        background: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        padding: 1rem 5%;
+      }
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--primary);
+        text-decoration: none;
+      }
+      .nav-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+      }
+      .nav-right a {
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: var(--text-main);
+      }
+      .nav-right a:hover {
+        color: var(--primary);
+      }
+      .nav-right .btn-auth {
+        background: var(--primary);
+        color: white;
+        padding: 0.5rem 1.1rem;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+      .nav-right .btn-auth:hover {
+        background: var(--primary-dark);
+        color: white;
+      }
+
+      /* Hero */
+      .hero {
+        background:
+          linear-gradient(rgba(15, 118, 110, 0.85), rgba(17, 94, 89, 0.9)),
+          url("https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1600&q=80")
+            center/cover;
+        color: white;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 5rem 5%;
+        text-align: center;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      .hero p {
+        max-width: 600px;
+        font-size: 0.95rem;
+      }
+
+      /* Search section */
+      .search-section {
+        padding: 4rem 5%;
+        background: var(--bg-light);
+      }
+      .search-card {
+        background: white;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+        border-radius: var(--radius);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .search-card h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.25rem;
+        color: var(--primary);
+      }
+      .search-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+      }
+      .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 0.95rem;
+      }
+      .form-group input:focus {
+        outline: 2px solid var(--primary);
+        border-color: transparent;
+      }
+      .btn-search {
+        background: var(--accent);
+        color: white;
+        border: none;
+        font-weight: 700;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        padding: 0.8rem 2rem;
+        margin-top: 1.5rem;
+        width: 100%;
+        transition: background 0.2s;
+      }
+      .btn-search:hover {
+        background: #d97706;
+      }
+
+      /* Routes section */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 3rem 5% 4rem;
+      }
+      .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+      .section-sub {
+        text-align: center;
+        color: #64748b;
+        margin-bottom: 2rem;
+      }
+      .route-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.5rem;
+      }
+      .route-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: var(--radius);
+        padding: 1.25rem 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          border-color 0.15s;
+      }
+      .route-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--primary);
+      }
+      .route-card h3 {
+        font-size: 1.1rem;
+        color: var(--text-main);
+      }
+      .route-card .meta {
+        font-size: 0.85rem;
+        color: #64748b;
+        margin: 0.25rem 0 0.75rem;
+      }
+      .route-card .price {
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      @media (max-width: 600px) {
+        .nav-right {
+          gap: 0.75rem;
+        }
+        .hero h1 {
+          font-size: 1.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="#" class="logo">Safiri</a>
+      <div class="nav-right">
+        <a href="#" onclick="printTicket(event)">Print Ticket</a>
+        <a href="#" class="btn-auth" onclick="loginSignup(event)"
+          >Login / Sign Up</a
+        >
+      </div>
+    </header>
+
+    <section class="hero">
+      <h1>Good Journeys Start Here</h1>
+      <p>Book online with Safiri and get an SMS ticket after payment.</p>
+    </section>
+
+    <section class="search-section" id="search">
+      <div class="search-card">
+        <h2>Find your trip</h2>
+        <div class="search-grid">
+          <div class="form-group">
+            <label for="origin">Leaving From</label>
+            <input type="text" id="origin" placeholder="Enter city" />
+          </div>
+          <div class="form-group">
+            <label for="destination">Going To</label>
+            <input type="text" id="destination" placeholder="Enter city" />
+          </div>
+          <div class="form-group">
+            <label for="departDate">Departure Date</label>
+            <input type="date" id="departDate" />
+          </div>
+          <div class="form-group">
+            <label for="returnDate">Return Date</label>
+            <input type="date" id="returnDate" />
+          </div>
+        </div>
+        <button class="btn-search" onclick="handleSearch()">Search</button>
+      </div>
+    </section>
+
+    <main class="container" id="routes">
+      <h2 class="section-title">Routes</h2>
+      <p class="section-sub">Popular destinations from Nairobi. Tap one to start your search.</p>
+      <div class="route-grid">
+        <div class="route-card" onclick="pickRoute('Voi')">
+          <h3>Voi</h3>
+          <div class="meta">Daily departures from Nairobi</div>
+          <div class="price">From KSh 1,200</div>
+        </div>
+        <div class="route-card" onclick="pickRoute('Mombasa')">
+          <h3>Mombasa</h3>
+          <div class="meta">Daily departures from Nairobi</div>
+          <div class="price">From KSh 1,500</div>
+        </div>
+        <div class="route-card" onclick="pickRoute('Mtwapa')">
+          <h3>Mtwapa</h3>
+          <div class="meta">Daily departures from Nairobi</div>
+          <div class="price">From KSh 1,600</div>
+        </div>
+        <div class="route-card" onclick="pickRoute('Mavueni')">
+          <h3>Mavueni</h3>
+          <div class="meta">Daily departures from Nairobi</div>
+          <div class="price">From KSh 1,700</div>
+        </div>
+        <div class="route-card" onclick="pickRoute('Kilifi')">
+          <h3>Kilifi</h3>
+          <div class="meta">Daily departures from Nairobi</div>
+          <div class="price">From KSh 1,700</div>
+        </div>
+        <div class="route-card" onclick="pickRoute('Malindi')">
+          <h3>Malindi</h3>
+          <div class="meta">Daily departures from Nairobi</div>
+          <div class="price">From KSh 1,800</div>
+        </div>
+        <div class="route-card" onclick="pickRoute('Ukunda')">
+          <h3>Ukunda</h3>
+          <div class="meta">Daily departures from Nairobi</div>
+          <div class="price">From KSh 1,600</div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function handleSearch() {
+        const origin = document.getElementById("origin").value.trim();
+        const destination = document.getElementById("destination").value.trim();
+        const depart = document.getElementById("departDate").value;
+        const ret = document.getElementById("returnDate").value;
+
+        if (!origin || !destination || !depart) {
+          alert("Please enter where you're leaving from, where you're going, and a departure date.");
+          return;
+        }
+        if (ret && ret < depart) {
+          alert("Return date can't be before the departure date.");
+          return;
+        }
+        location.href =
+          "inventory.html?from=" + encodeURIComponent(origin) +
+          "&to=" + encodeURIComponent(destination) +
+          "&date=" + encodeURIComponent(depart) +
+          (ret ? "&return=" + encodeURIComponent(ret) : "");
+      }
+
+      function pickRoute(city) {
+        let from = "";
+        try { from = localStorage.getItem("safiri_city") || ""; } catch (e) {}
+        let url = "inventory.html?to=" + encodeURIComponent(city);
+        if (from) url += "&from=" + encodeURIComponent(from);
+        location.href = url;
+      }
+
+      // Load routes from your database (optional).
+      // Expected: GET {API_BASE}/routes -> [{ city: "Mombasa", from_price: 1500, note: "Daily departures" }]
+      const API_BASE = ""; // e.g. "https://yourdomain.com/api"
+      async function loadRoutes() {
+        if (!API_BASE) return;
+        try {
+          const res = await fetch(API_BASE + "/routes");
+          if (!res.ok) throw new Error(res.status);
+          const routes = await res.json();
+          if (!routes.length) return;
+          document.querySelector(".route-grid").innerHTML = routes
+            .map(
+              (r) => `<div class="route-card" onclick="pickRoute('${String(r.city).replace(/'/g, "\\'")}')">
+                <h3>${r.city}</h3>
+                <div class="meta">${r.note || ""}</div>
+                <div class="price">From KSh ${Number(r.from_price).toLocaleString("en-KE")}</div>
+              </div>`
+            )
+            .join("");
+        } catch (e) {
+          console.warn("Could not load routes, keeping defaults:", e);
+        }
+      }
+      loadRoutes();
+
+      function printTicket(e) {
+        e.preventDefault();
+        alert("Print Ticket: enter your booking reference to print your ticket.");
+      }
+
+      function loginSignup(e) {
+        e.preventDefault();
+        alert("Login / Sign Up coming soon.");
+      }
+    </script>
+  </body>
+</html>
