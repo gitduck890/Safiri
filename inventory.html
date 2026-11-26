@@ -19,18 +19,13 @@
       .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); text-decoration: none; }
       .nav-right { margin-left: auto; display: flex; align-items: center; gap: 1.25rem; }
       .nav-right a { text-decoration: none; font-weight: 500; font-size: 0.95rem; color: var(--text-main); }
-      .nav-right .btn-auth { background: var(--primary); color: #fff; padding: 0.5rem 1.1rem; border-radius: 8px; font-weight: 600; }
 
       .wrap { max-width: 1200px; margin: 0 auto; padding: 2rem 5% 4rem; }
-      .demo-banner { display: none; background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; padding: 0.6rem 1rem; border-radius: 8px; font-size: 0.85rem; margin-bottom: 1rem; }
 
       /* Location + route bar */
       .bar { background: #fff; border-radius: var(--radius); box-shadow: 0 4px 6px rgba(0,0,0,.05); border: 1px solid #e2e8f0; padding: 1.25rem 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end; }
       .bar label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; }
       .bar select { width: 100%; padding: 0.7rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; background: #fff; }
-      .btn-ghost { background: #ccfbf1; color: var(--primary); border: none; border-radius: 8px; padding: 0.7rem 1rem; font-weight: 600; cursor: pointer; width: 100%; }
-      .btn-ghost:hover { background: #99f6e4; }
-      .loc-note { font-size: 0.8rem; color: #64748b; margin-top: 0.5rem; grid-column: 1 / -1; }
 
       .layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem; margin-top: 2rem; align-items: start; }
       @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
@@ -57,42 +52,85 @@
       .seat-panel { background: #fff; border: 1px solid #e2e8f0; border-radius: var(--radius); padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,.05); position: sticky; top: 5rem; }
       .seat-panel h2 { font-size: 1.2rem; margin-bottom: 0.25rem; }
       .seat-panel .sub { font-size: 0.85rem; color: #64748b; margin-bottom: 1rem; }
-      .van { width: 240px; margin: 0 auto; border: 3px solid #94a3b8; border-radius: 40px 40px 18px 18px; padding: 1.4rem 1rem 1rem; background: #f1f5f9; position: relative; }
-      .van::before { content: "FRONT"; position: absolute; top: 0.35rem; left: 50%; transform: translateX(-50%); font-size: 0.65rem; letter-spacing: .15em; color: #94a3b8; font-weight: 700; }
-      .van-row { display: grid; grid-template-columns: 1fr 1fr 0.5fr 1fr; gap: 0.5rem; margin-bottom: 0.55rem; }
-      .van-row.back { grid-template-columns: repeat(4, 1fr); }
-      .seat { aspect-ratio: 1; border-radius: 8px 8px 4px 4px; border: 2px solid var(--primary); background: #fff; color: var(--primary); font-weight: 700; font-size: 0.85rem; cursor: pointer; }
-      .seat:hover:not(:disabled) { background: #ccfbf1; }
-      .seat.selected { background: var(--accent); border-color: #d97706; color: #fff; }
-      .seat:disabled { background: #cbd5e1; border-color: #94a3b8; color: #64748b; cursor: not-allowed; }
-      .driver { aspect-ratio: 1; border-radius: 50%; background: #475569; color: #fff; display: grid; place-items: center; font-size: 0.6rem; font-weight: 700; }
-      .spacer { visibility: hidden; }
-      .legend { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; font-size: 0.78rem; flex-wrap: wrap; }
-      .legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 0.35rem; vertical-align: -1px; border: 2px solid var(--primary); background: #fff; }
-      .legend .l-sel::before { background: var(--accent); border-color: #d97706; }
-      .legend .l-bk::before { background: #cbd5e1; border-color: #94a3b8; }
+      .qty-label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; }
+      .stepper { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin: 0.5rem 0; }
+      .stepper button { width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--primary); background: #fff; color: var(--primary); font-size: 1.5rem; font-weight: 700; cursor: pointer; line-height: 1; }
+      .stepper button:hover:not(:disabled) { background: #ccfbf1; }
+      .stepper button:disabled { border-color: #cbd5e1; color: #cbd5e1; cursor: not-allowed; }
+      .stepper .qty { font-size: 2rem; font-weight: 800; min-width: 2.5rem; text-align: center; color: var(--text-main); }
+      .qty-note { text-align: center; font-size: 0.8rem; color: #64748b; }
       .summary { border-top: 1px solid #e2e8f0; margin-top: 1.25rem; padding-top: 1rem; font-size: 0.95rem; }
       .summary strong { color: var(--primary); }
       .btn-book { background: var(--primary); color: #fff; border: none; padding: 0.8rem; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 0.75rem; font-size: 1rem; }
       .btn-book:hover { background: var(--primary-dark); }
       .btn-book:disabled { background: #94a3b8; cursor: not-allowed; }
       .placeholder { text-align: center; color: #64748b; padding: 2rem 0; }
+      /* Checkout modal */
+      .modal-bg { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 200; overflow-y: auto; }
+      .modal-bg[hidden] { display: none; }
+      .modal { background: #fff; border-radius: var(--radius); width: 100%; max-width: 440px; padding: 1.75rem 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,.25); animation: pop .2s ease-out; }
+      @keyframes pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      .modal h2 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--primary); }
+      .order-rows { border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.25rem 1rem; margin-bottom: 1.25rem; }
+      .order-rows div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.92rem; }
+      .order-rows div:last-child { border-bottom: none; font-size: 1.05rem; font-weight: 700; }
+      .order-rows span:first-child { color: #64748b; }
+      .order-rows div:last-child span:last-child { color: var(--primary); }
+      .field label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; }
+      .field input { width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; }
+      .field input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+      .field .hint { font-size: 0.78rem; color: #64748b; margin-top: 0.35rem; }
+      .field .err { font-size: 0.8rem; color: #b91c1c; margin-top: 0.35rem; min-height: 1.1em; }
+      .modal .btn-book { margin-top: 1rem; }
+      .btn-link { background: none; border: none; color: #64748b; font-weight: 600; width: 100%; padding: 0.7rem; cursor: pointer; margin-top: 0.25rem; }
+      .btn-link:hover { color: var(--text-main); }
+      .center { text-align: center; }
+      .center p { color: #64748b; font-size: 0.92rem; margin-top: 0.5rem; }
+      .center .big { font-size: 1.05rem; color: var(--text-main); font-weight: 600; }
+      .spinner { width: 54px; height: 54px; border: 5px solid #ccfbf1; border-top-color: var(--primary); border-radius: 50%; margin: 0.5rem auto 1.25rem; animation: spin 0.9s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .icon { width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; font-size: 1.8rem; font-weight: 800; margin: 0.25rem auto 1rem; }
+      .icon.ok { background: #dcfce7; color: #15803d; }
+      .icon.bad { background: #fee2e2; color: #b91c1c; }
+      .ref { display: inline-block; background: #f1f5f9; border-radius: 8px; padding: 0.35rem 0.8rem; font-family: ui-monospace, monospace; font-weight: 700; margin-top: 0.75rem; color: var(--text-main); }
+      a.btn-book { display: block; text-align: center; text-decoration: none; }
+      .ticket-img { width: 100%; border-radius: 10px; border: 1px solid #e2e8f0; margin: 0.5rem 0 0.25rem; }
+      .field textarea { width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; min-height: 110px; resize: vertical; font-family: inherit; }
+      .field textarea:focus { outline: 2px solid var(--primary); border-color: transparent; }
+      .btn-outline { background: #fff; color: var(--primary); border: 2px solid var(--primary); padding: 0.75rem; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 0.5rem; font-size: 1rem; }
+      .btn-outline:hover { background: #f0fdfa; }
+      /* Print ticket (paste M-Pesa message) */
+      .pt-bg { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 300; overflow-y: auto; }
+      .pt-bg[hidden] { display: none; }
+      .pt-modal { background: #fff; border-radius: 12px; width: 100%; max-width: 440px; padding: 1.75rem 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,.25); margin: auto; }
+      .pt-modal h2 { font-size: 1.3rem; color: #0f766e; margin-bottom: 0.75rem; }
+      .pt-modal label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; }
+      .pt-modal textarea { width: 100%; min-height: 120px; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; font-family: inherit; resize: vertical; }
+      .pt-modal textarea:focus { outline: 2px solid #0f766e; border-color: transparent; }
+      .pt-hint { font-size: 0.78rem; color: #64748b; margin-top: 0.35rem; }
+      .pt-err { font-size: 0.8rem; color: #b91c1c; margin-top: 0.35rem; min-height: 1.1em; }
+      .pt-btn { display: block; width: 100%; background: #0f766e; color: #fff; border: none; padding: 0.8rem; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; margin-top: 0.9rem; }
+      .pt-btn:hover { background: #115e59; }
+      .pt-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+      .pt-btn.alt { background: #fff; color: #0f766e; border: 2px solid #0f766e; margin-top: 0.5rem; }
+      .pt-btn.alt:hover { background: #f0fdfa; }
+      .pt-link { background: none; border: none; color: #64748b; font-weight: 600; width: 100%; padding: 0.7rem; cursor: pointer; margin-top: 0.25rem; font-size: 0.95rem; }
+      .pt-img { width: 100%; border-radius: 10px; border: 1px solid #e2e8f0; margin: 0.5rem 0; }
+      .pt-center { text-align: center; }
+      .pt-center p { color: #64748b; font-size: 0.92rem; margin-top: 0.4rem; }
+      .pt-icon { width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; font-size: 1.8rem; font-weight: 800; margin: 0.25rem auto 1rem; background: #dcfce7; color: #15803d; }
+
     </style>
   </head>
   <body>
     <header>
       <a href="index.html" class="logo">Safiri</a>
       <div class="nav-right">
-        <a href="#">Print Ticket</a>
-        <a href="#" class="btn-auth">Login / Sign Up</a>
+        <a href="#" onclick="openPrintTicket(event)">Print Ticket</a>
       </div>
     </header>
 
     <div class="wrap">
-      <div class="demo-banner" id="demoBanner">
-        Showing demo data. Set <code>API_BASE</code> in this file to your backend to see live inventory.
-      </div>
-
       <div class="bar">
         <div>
           <label for="fromCity">I'm currently in</label>
@@ -102,10 +140,6 @@
           <label for="toCity">Going to</label>
           <select id="toCity"></select>
         </div>
-        <div>
-          <button class="btn-ghost" id="detectBtn" type="button">📍 Detect my city</button>
-        </div>
-        <div class="loc-note" id="locNote"></div>
       </div>
 
       <div class="layout">
@@ -128,6 +162,14 @@
       </div>
     </div>
 
+    <div class="modal-bg" id="checkout" hidden>
+      <div class="modal" id="checkoutBody" role="dialog" aria-modal="true"></div>
+    </div>
+
+    <div class="pt-bg" id="ptModal" hidden>
+      <div class="pt-modal" id="ptBody" role="dialog" aria-modal="true"></div>
+    </div>
+
     <script>
       /* ===================== CONFIG ===================== */
       // Point this at your backend, e.g. "https://yourdomain.com/api".
@@ -135,25 +177,16 @@
       const API_BASE = "";
       const REFRESH_MS = 10000;
 
-      // Used for "Detect my city" (nearest match). Add your own cities.
+      // Towns Safiri serves (must match the towns on the home page).
       const CITIES = [
-        { name: "Nairobi", lat: -1.2921, lng: 36.8219 },
-        { name: "Mombasa", lat: -4.0435, lng: 39.6682 },
-        { name: "Kisumu", lat: -0.0917, lng: 34.768 },
-        { name: "Nakuru", lat: -0.3031, lng: 36.08 },
-        { name: "Eldoret", lat: 0.5143, lng: 35.2698 },
-        { name: "Malindi", lat: -3.2192, lng: 40.1169 },
-        { name: "Arusha", lat: -3.3869, lng: 36.683 },
-      ];
-
-      // 14-seater van layout (front at top; driver on the right).
-      // number = seat, "D" = driver, null = aisle gap. 14 passenger seats total.
-      const LAYOUT = [
-        [1, null, null, "D"],
-        [2, 3, null, 4],
-        [5, 6, null, 7],
-        [8, 9, null, 10],
-        [11, 12, 13, 14],
+        { name: "Nairobi" },
+        { name: "Voi" },
+        { name: "Mombasa" },
+        { name: "Mtwapa" },
+        { name: "Mavueni" },
+        { name: "Kilifi" },
+        { name: "Malindi" },
+        { name: "Ukunda" },
       ];
 
       /* ===================== STATE ===================== */
@@ -163,7 +196,7 @@
         to: params.get("to") || "Mombasa",
         vehicles: [],
         activeId: null,
-        selected: new Set(),
+        qty: 1,
         usingDemo: false,
       };
 
@@ -228,7 +261,6 @@
       }
 
       function renderList() {
-        $("demoBanner").style.display = state.usingDemo ? "block" : "none";
         $("routeTitle").textContent = `${state.from} → ${state.to}`;
         const list = $("vehicleList");
         if (!state.vehicles.length) {
@@ -246,7 +278,7 @@
             <div class="v-meta">${v.plate} • Departs ${time}</div>
             <span class="badge ${left <= 3 ? "low" : ""}">${left === 0 ? "Fully booked" : left + " seats left"}</span>`;
           card.onclick = () => {
-            if (state.activeId !== v.id) state.selected.clear();
+            if (state.activeId !== v.id) state.qty = 1;
             state.activeId = v.id;
             renderList();
             renderSeats();
@@ -255,51 +287,484 @@
         });
       }
 
-      /* ===================== RENDER: SEAT MAP ===================== */
+      /* ===================== RENDER: BOOKING PANEL ===================== */
       function renderSeats() {
         const panel = $("seatPanel");
         const v = state.vehicles.find((x) => x.id === state.activeId);
         if (!v) {
-          panel.innerHTML = `<div class="placeholder">Select a vehicle to see its seat layout.</div>`;
+          panel.innerHTML = `<div class="placeholder">Select a vehicle to choose how many seats you need.</div>`;
           return;
         }
-        // drop selections that were booked by someone else since last refresh
-        state.selected.forEach((s) => v.booked_seats.includes(s) && state.selected.delete(s));
+        const left = v.seats_total - v.booked_seats.length;
+        if (left === 0) {
+          panel.innerHTML = `
+            <h2>${v.plate}</h2>
+            <div class="sub">${v.type} • ${state.from} → ${state.to}</div>
+            <div class="placeholder">This vehicle is fully booked. Please pick another.</div>`;
+          return;
+        }
+        // keep quantity within what's still available after a refresh
+        state.qty = Math.min(Math.max(state.qty, 1), left);
 
-        const rows = LAYOUT.map((row, i) => {
-          const cells = row.map((c) => {
-            if (c === "D") return `<div class="driver">DRIVER</div>`;
-            if (c === null) return `<div class="spacer"></div>`;
-            const booked = v.booked_seats.includes(c);
-            const sel = state.selected.has(c);
-            return `<button class="seat ${sel ? "selected" : ""}" data-seat="${c}" ${booked ? "disabled" : ""} aria-label="Seat ${c}${booked ? " booked" : ""}">${c}</button>`;
-          }).join("");
-          return `<div class="van-row ${i === LAYOUT.length - 1 ? "back" : ""}">${cells}</div>`;
-        }).join("");
-
-        const seats = [...state.selected].sort((a, b) => a - b);
         panel.innerHTML = `
           <h2>${v.plate}</h2>
           <div class="sub">${v.type} • ${state.from} → ${state.to}</div>
-          <div class="van">${rows}</div>
-          <div class="legend"><span>Available</span><span class="l-sel">Selected</span><span class="l-bk">Booked</span></div>
-          <div class="summary">
-            Seats: <strong>${seats.length ? seats.join(", ") : "none selected"}</strong><br />
-            Total: <strong>${ksh(seats.length * v.price)}</strong>
+          <label class="qty-label">Number of seats</label>
+          <div class="stepper">
+            <button type="button" id="qtyMinus" aria-label="Fewer seats" ${state.qty <= 1 ? "disabled" : ""}>−</button>
+            <span class="qty" id="qtyVal">${state.qty}</span>
+            <button type="button" id="qtyPlus" aria-label="More seats" ${state.qty >= left ? "disabled" : ""}>+</button>
           </div>
-          <button class="btn-book" id="payBtn" ${seats.length ? "" : "disabled"}>Continue to Payment</button>`;
+          <div class="qty-note">${left} seat${left === 1 ? "" : "s"} left on this vehicle</div>
+          <div class="summary">
+            ${state.qty} × ${ksh(v.price)}<br />
+            Total: <strong>${ksh(state.qty * v.price)}</strong>
+          </div>
+          <button class="btn-book" id="payBtn">Continue to Payment</button>`;
 
-        panel.querySelectorAll(".seat:not(:disabled)").forEach((b) => {
-          b.onclick = () => {
-            const n = Number(b.dataset.seat);
-            state.selected.has(n) ? state.selected.delete(n) : state.selected.add(n);
-            renderSeats();
-          };
-        });
-        $("payBtn").onclick = () => {
-          // Hook this up to your payment flow (e.g. M-Pesa STK push).
-          alert(`Booking ${seats.length} seat(s): ${seats.join(", ")} on ${v.plate}.\nTotal ${ksh(seats.length * v.price)}`);
+        $("qtyMinus").onclick = () => { state.qty--; renderSeats(); };
+        $("qtyPlus").onclick = () => { state.qty++; renderSeats(); };
+        $("payBtn").onclick = () => openCheckout(v);
+      }
+
+      /* ===================== PRINT TICKET (paste M-Pesa message) ===================== */
+      /* Expected API:
+         POST {API_BASE}/tickets/verify
+           body: { reference: "QWE1ABC2DE", message: "<pasted SMS>" }
+           -> { status: "paid", ticket: { reference, from, to, departure_time (ISO),
+                                          plate, seats, amount, phone } }
+            | { status: "pending", message? }     (payment found but not confirmed yet)
+            | { status: "not_found", message? }   (code doesn't match any booking)
+         Your server must check the code against real M-Pesa/booking records. */
+      (function () {
+        const api = () => (typeof API_BASE === "undefined" ? "" : API_BASE);
+        const money = (n) => "KSh " + Number(n).toLocaleString("en-KE");
+        const pretty = (p) => {
+          p = String(p || "");
+          if (/^254[71]\d{8}$/.test(p)) { const l = "0" + p.slice(3); return `${l.slice(0, 4)} ${l.slice(4, 7)} ${l.slice(7)}`; }
+          return p || "—";
         };
+        const el = (id) => document.getElementById(id);
+        const modal = () => el("ptModal");
+        const body = (html) => { el("ptBody").innerHTML = html; };
+
+        /* ---- Ticket image (canvas, no libraries). t = ticket details ---- */
+        window.drawTicketImage = function (t) {
+          const W = 900, H = 1060;
+          const c = document.createElement("canvas");
+          c.width = W; c.height = H;
+          const g = c.getContext("2d");
+          const font = (w, px, mono) => `${w} ${px}px ${mono ? "ui-monospace, Menlo, Consolas, monospace" : 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'}`;
+          const d = new Date(t.departure_time);
+
+          g.fillStyle = "#e2e8f0"; g.fillRect(0, 0, W, H);
+          g.fillStyle = "#ffffff"; g.fillRect(40, 40, W - 80, H - 80);
+          g.fillStyle = "#0f766e"; g.fillRect(40, 40, W - 80, 190);
+          g.fillStyle = "#ffffff"; g.textAlign = "left"; g.textBaseline = "alphabetic";
+          g.font = font(800, 64); g.fillText("Safiri", 80, 135);
+          g.font = font(600, 26); g.fillText("E-TICKET", 80, 185);
+          g.textAlign = "right"; g.fillStyle = "#fcd34d"; g.font = font(800, 34);
+          g.fillText("PAID ✓", W - 80, 135); g.textAlign = "left";
+
+          g.fillStyle = "#334155";
+          let size = 58;
+          const route = `${t.from} → ${t.to}`;
+          g.font = font(800, size);
+          while (g.measureText(route).width > W - 160 && size > 28) { size -= 2; g.font = font(800, size); }
+          g.fillText(route, 80, 330);
+
+          const field = (label, value, x, y, mono) => {
+            g.fillStyle = "#94a3b8"; g.font = font(700, 20); g.fillText(label, x, y);
+            g.fillStyle = "#1e293b"; g.font = font(700, 34, mono); g.fillText(value, x, y + 46);
+          };
+          const date = d.toLocaleDateString("en-KE", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+          const seats = Number(t.seats) || 1;
+          field("DATE", date, 80, 430);
+          field("VEHICLE", t.plate || "—", 500, 430);
+          field("SEATS", `${seats} seat${seats === 1 ? "" : "s"}`, 80, 560);
+          field("AMOUNT PAID", money(t.amount), 500, 560);
+          field("PHONE", pretty(t.phone), 80, 690);
+          field("M-PESA REFERENCE", t.reference || "—", 500, 690, true);
+
+          const y = 820;
+          g.fillStyle = "#e2e8f0";
+          g.beginPath(); g.arc(40, y, 24, 0, Math.PI * 2); g.fill();
+          g.beginPath(); g.arc(W - 40, y, 24, 0, Math.PI * 2); g.fill();
+          g.strokeStyle = "#cbd5e1"; g.lineWidth = 3; g.setLineDash([12, 10]);
+          g.beginPath(); g.moveTo(80, y); g.lineTo(W - 80, y); g.stroke(); g.setLineDash([]);
+
+          g.fillStyle = "#334155"; g.font = font(700, 26);
+          g.fillText("Show this ticket when boarding.", 80, 890);
+          g.fillStyle = "#64748b"; g.font = font(500, 22);
+          g.fillText("Keep this image as your proof of booking.", 80, 928);
+          g.fillText("Issued " + new Date().toLocaleString("en-KE", { dateStyle: "medium", timeStyle: "short" }), 80, 960);
+          if (t.demo) { g.textAlign = "right"; g.fillStyle = "#b91c1c"; g.font = font(800, 24); g.fillText("DEMO TICKET", W - 80, 960); g.textAlign = "left"; }
+          return c.toDataURL("image/png");
+        };
+
+        // M-Pesa codes are 10 characters, letters + digits (e.g. QWE1ABC2DE)
+        function parse(text) {
+          const up = String(text).toUpperCase();
+          const codes = (up.match(/\b[A-Z0-9]{10}\b/g) || []).filter((c) => /[A-Z]/.test(c) && /\d/.test(c));
+          const amt = String(text).match(/ksh\.?\s?([\d,]+(?:\.\d+)?)/i);
+          return { reference: codes[0] || "", amount: amt ? Number(amt[1].replace(/,/g, "")) : null };
+        }
+
+        function close() { modal().hidden = true; }
+
+        function showPaste(prefill, error) {
+          body(`
+            <h2>Print your ticket</h2>
+            <label for="ptMsg">Paste your M-Pesa confirmation message</label>
+            <textarea id="ptMsg" placeholder="QWE1ABC2DE Confirmed. Ksh1,500.00 paid to …"></textarea>
+            <div class="pt-hint">Copy the full SMS you received from M-Pesa when you paid. We'll check it before printing your ticket.</div>
+            <div class="pt-err" id="ptErr"></div>
+            <button class="pt-btn" id="ptGo">Verify &amp; get ticket</button>
+            <button class="pt-link" id="ptCancel" type="button">Cancel</button>`);
+          el("ptMsg").value = prefill || "";
+          el("ptErr").textContent = error || "";
+          el("ptCancel").onclick = close;
+          el("ptGo").onclick = () => verify(el("ptMsg").value);
+          el("ptMsg").focus();
+        }
+
+        async function verify(msg) {
+          const { reference, amount } = parse(msg);
+          if (!reference) return showPaste(msg, "We couldn't find an M-Pesa code (like QWE1ABC2DE) in that message. Please paste the whole message.");
+          const btn = el("ptGo");
+          btn.disabled = true; btn.textContent = "Checking…";
+          try {
+            let r;
+            if (api()) {
+              const res = await fetch(`${api()}/tickets/verify`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ reference, message: msg }),
+              });
+              if (!res.ok) throw new Error(res.status);
+              r = await res.json();
+            } else {
+              // Demo mode: accept any valid-looking code and show a sample ticket.
+              const dep = new Date(); dep.setHours(7, 0, 0, 0);
+              r = { status: "paid", ticket: { reference, from: "Nairobi", to: "Mombasa", departure_time: dep.toISOString(), plate: "KDA 214X", seats: 1, amount: amount || 1500, phone: "", demo: true } };
+            }
+            if (r.status === "paid" && r.ticket) return showTicket(r.ticket);
+            if (r.status === "pending") {
+              body(`
+                <div class="pt-center">
+                  <div class="pt-icon">…</div>
+                  <h2>We're still verifying</h2>
+                  <p>${r.message || "We found your payment but it isn't confirmed yet. Please try again in a few minutes."}</p>
+                </div>
+                <button class="pt-btn" id="ptClose">Close</button>`);
+              el("ptClose").onclick = close;
+              return;
+            }
+            showPaste(msg, r.message || "We couldn't match that message to a paid booking. Check the message and try again.");
+          } catch (e) {
+            showPaste(msg, "We couldn't reach the server to verify. Please try again.");
+          }
+        }
+
+        function showTicket(t) {
+          const img = window.drawTicketImage(t);
+          const file = `safiri-ticket-${String(t.reference || "booking").replace(/[^A-Za-z0-9]/g, "")}.png`;
+          body(`
+            <div class="pt-center">
+              <div class="pt-icon">✓</div>
+              <h2 style="margin-bottom:0">Payment verified</h2>
+            </div>
+            <img class="pt-img" src="${img}" alt="Your Safiri ticket" />
+            <button class="pt-btn" id="ptSave" type="button">Save ticket</button>
+            <button class="pt-link" id="ptDone" type="button">Done</button>`);
+          el("ptSave").onclick = () => {
+            const a = document.createElement("a");
+            a.href = img; a.download = file;
+            document.body.appendChild(a); a.click(); a.remove();
+            el("ptSave").textContent = "Ticket saved ✓";
+          };
+          el("ptDone").onclick = close;
+        }
+
+        window.openPrintTicket = function (e) {
+          if (e) e.preventDefault();
+          modal().hidden = false;
+          showPaste("");
+        };
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !modal().hidden) close(); });
+      })();
+
+      /* ===================== CHECKOUT (M-PESA) ===================== */
+      /* Expected API (your backend holds the Daraja keys, never this page):
+         POST {API_BASE}/payments/stk-push
+           body: { vehicle_id, from, to, seats, amount, phone: "2547XXXXXXXX" }
+           -> { payment_id }
+         GET  {API_BASE}/payments/{payment_id}
+           -> { status: "pending" | "paid" | "failed" | "cancelled",
+                reference: "QWE123ABCD", message?: "..." }
+         On "paid", your backend should also SMS the ticket to the phone number. */
+      const order = { v: null, qty: 0, total: 0, phone: "", timer: null };
+
+      // Accepts 07xx, 01xx, 7xx, 1xx, 2547xx, +2547xx -> 2547XXXXXXXX (or "" if invalid)
+      function normalizePhone(raw) {
+        let p = String(raw).replace(/[\s\-()+]/g, "");
+        if (/^0[71]\d{8}$/.test(p)) p = "254" + p.slice(1);
+        else if (/^[71]\d{8}$/.test(p)) p = "254" + p;
+        return /^254[71]\d{8}$/.test(p) ? p : "";
+      }
+      function prettyPhone(p) {
+        const l = "0" + p.slice(3);
+        return `${l.slice(0, 4)} ${l.slice(4, 7)} ${l.slice(7)}`;
+      }
+
+      function openCheckout(v) {
+        const left = v.seats_total - v.booked_seats.length;
+        order.v = { id: v.id, plate: v.plate, type: v.type, price: v.price, departure_time: v.departure_time };
+        order.qty = Math.min(state.qty, left);
+        order.total = order.qty * v.price;
+        order.from = state.from;
+        order.to = state.to;
+        order.phone = "";
+        order.paymentId = null;
+        order.ref = "";
+        $("checkout").hidden = false;
+        showSummary(store("safiri_phone") || "");
+      }
+
+      function closeCheckout() {
+        clearTimeout(order.timer);
+        $("checkout").hidden = true;
+      }
+
+      const body = (html) => { $("checkoutBody").innerHTML = html; };
+
+      function showSummary(prefill, error) {
+        const o = order, v = o.v;
+        const when = new Date(v.departure_time).toLocaleString("en-KE", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+        body(`
+          <h2>Order summary</h2>
+          <div class="order-rows">
+            <div><span>Route</span><span>${o.from} → ${o.to}</span></div>
+            <div><span>Vehicle</span><span>${v.plate}</span></div>
+            <div><span>Departs</span><span>${when}</span></div>
+            <div><span>Seats</span><span>${o.qty} × ${ksh(v.price)}</span></div>
+            <div><span>Total</span><span>${ksh(o.total)}</span></div>
+          </div>
+          <div class="field">
+            <label for="mpesaPhone">M-Pesa phone number</label>
+            <input id="mpesaPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07XX XXX XXX" value="${prefill || ""}" />
+            <div class="hint">The payment prompt and your ticket SMS go to this number.</div>
+            <div class="err" id="phoneErr">${error || ""}</div>
+          </div>
+          <button class="btn-book" id="toConfirm">Continue</button>
+          <button class="btn-link" id="closeBtn" type="button">Back to seats</button>`);
+        const input = $("mpesaPhone");
+        const go = () => {
+          const p = normalizePhone(input.value);
+          if (!p) { $("phoneErr").textContent = "Enter a valid Safaricom number, e.g. 0712 345 678."; input.focus(); return; }
+          order.phone = p;
+          store("safiri_phone", input.value.trim());
+          showConfirm();
+        };
+        $("toConfirm").onclick = go;
+        input.onkeydown = (e) => { if (e.key === "Enter") go(); };
+        $("closeBtn").onclick = closeCheckout;
+        input.focus();
+      }
+
+      function showConfirm() {
+        body(`
+          <h2>Confirm M-Pesa payment</h2>
+          <div class="center">
+            <p class="big">Send a payment request of <strong>${ksh(order.total)}</strong> to</p>
+            <p class="big" style="font-size:1.3rem;margin-top:.25rem">${prettyPhone(order.phone)}</p>
+            <p>You'll get an M-Pesa prompt on this phone. Enter your PIN to complete payment.</p>
+          </div>
+          <button class="btn-book" id="sendStk">Confirm &amp; send M-Pesa prompt</button>
+          <button class="btn-link" id="changeNum" type="button">Change number</button>`);
+        $("sendStk").onclick = sendStk;
+        $("changeNum").onclick = () => showSummary(order.phone ? "0" + order.phone.slice(3) : "");
+      }
+
+      function showWaiting() {
+        body(`
+          <div class="center">
+            <div class="spinner"></div>
+            <h2 style="margin-bottom:.25rem">Check your phone</h2>
+            <p class="big">Enter your M-Pesa PIN to pay ${ksh(order.total)}.</p>
+            <p>Sent to ${prettyPhone(order.phone)}. Please keep this page open.</p>
+          </div>`);
+      }
+
+      /* ---------- Ticket image: uses the shared drawTicketImage above ---------- */
+      function drawTicket(ref) {
+        return window.drawTicketImage({
+          reference: ref, from: order.from, to: order.to,
+          departure_time: order.v.departure_time, plate: order.v.plate,
+          seats: order.qty, amount: order.total, phone: order.phone,
+        });
+      }
+
+      function showSuccess(ref) {
+        order.ref = ref || "";
+        const img = drawTicket(order.ref);
+        const file = `safiri-ticket-${(order.ref || "booking").replace(/[^A-Za-z0-9]/g, "")}.png`;
+        body(`
+          <div class="center">
+            <div class="icon ok">✓</div>
+            <h2 style="margin-bottom:.25rem">Payment received</h2>
+            <p>Your ticket was also sent by SMS to ${prettyPhone(order.phone)}.</p>
+          </div>
+          <img class="ticket-img" src="${img}" alt="Your Safiri ticket" />
+          <button class="btn-book" id="dlBtn" type="button">Save ticket</button>
+          <button class="btn-link" id="doneBtn" type="button">Done</button>`);
+        $("dlBtn").onclick = () => {
+          // Downloads the ticket image straight to the device.
+          const a = document.createElement("a");
+          a.href = img;
+          a.download = file;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          $("dlBtn").textContent = "Ticket saved ✓";
+        };
+        $("doneBtn").onclick = async () => {
+          closeCheckout();
+          state.activeId = null;
+          state.qty = 1;
+          await refresh();
+          renderSeats();
+        };
+      }
+
+      function showFailed(msg) {
+        body(`
+          <div class="center">
+            <div class="icon bad">!</div>
+            <h2 style="margin-bottom:.25rem;color:#b91c1c">Payment not completed</h2>
+            <p>${msg}</p>
+          </div>
+          <button class="btn-book" id="retryBtn">Try again</button>
+          <button class="btn-outline" id="pasteBtn" type="button">I already paid – paste M-Pesa message</button>
+          <button class="btn-link" id="closeBtn" type="button">Close</button>`);
+        $("retryBtn").onclick = showConfirm;
+        $("pasteBtn").onclick = () => showVerify();
+        $("closeBtn").onclick = closeCheckout;
+      }
+
+      /* ---------- Paste M-Pesa message as reference ---------- */
+      function parseMpesa(text) {
+        // M-Pesa codes are 10 characters, letters + digits (e.g. QWE1ABC2DE)
+        const codes = (String(text).toUpperCase().match(/\b[A-Z0-9]{10}\b/g) || []).filter((c) => /[A-Z]/.test(c) && /\d/.test(c));
+        const amt = String(text).match(/ksh\.?\s?([\d,]+(?:\.\d+)?)/i);
+        return { reference: codes[0] || "", amount: amt ? Number(amt[1].replace(/,/g, "")) : null };
+      }
+
+      function showVerify(prefill, error) {
+        body(`
+          <h2>Paste your M-Pesa message</h2>
+          <div class="field">
+            <label for="mpesaMsg">M-Pesa confirmation SMS</label>
+            <textarea id="mpesaMsg" placeholder="QWE1ABC2DE Confirmed. Ksh${order.total.toLocaleString("en-KE")}.00 paid to …">${prefill || ""}</textarea>
+            <div class="hint">Copy the full message you received from M-Pesa after paying and paste it here. We'll check it against our payments.</div>
+            <div class="err" id="msgErr">${error || ""}</div>
+          </div>
+          <button class="btn-book" id="verifyBtn">Verify payment</button>
+          <button class="btn-link" id="backBtn" type="button">Back</button>`);
+        $("backBtn").onclick = () => showFailed("Choose how you'd like to continue.");
+        $("verifyBtn").onclick = () => submitVerify($("mpesaMsg").value);
+      }
+
+      async function submitVerify(msg) {
+        const { reference, amount } = parseMpesa(msg);
+        if (!reference) return showVerify(msg, "We couldn't find an M-Pesa code (like QWE1ABC2DE) in that message. Please paste the whole message.");
+        if (amount !== null && amount < order.total) return showVerify(msg, `That message shows ${ksh(amount)}, but your total is ${ksh(order.total)}.`);
+        const btn = $("verifyBtn");
+        btn.disabled = true; btn.textContent = "Checking…";
+        try {
+          let r = { status: "paid", reference }; // demo mode accepts any valid-looking code
+          if (API_BASE) {
+            const res = await fetch(`${API_BASE}/payments/verify`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                payment_id: order.paymentId || null, vehicle_id: order.v.id,
+                from: order.from, to: order.to, seats: order.qty, amount: order.total,
+                phone: order.phone, reference, message: msg,
+              }),
+            });
+            if (!res.ok) throw new Error();
+            r = await res.json();
+          }
+          if (r.status === "paid") return showSuccess(r.reference || reference);
+          if (r.status === "pending") {
+            body(`
+              <div class="center">
+                <div class="icon ok">…</div>
+                <h2 style="margin-bottom:.25rem">We're verifying your payment</h2>
+                <p>${r.message || `We received code ${reference}. Your ticket will be sent by SMS to ${prettyPhone(order.phone)} once it's confirmed.`}</p>
+              </div>
+              <button class="btn-book" id="closeBtn">Close</button>`);
+            $("closeBtn").onclick = closeCheckout;
+            return;
+          }
+          showVerify(msg, r.message || "We couldn't match that message to a payment. Check the code and try again.");
+        } catch (e) {
+          showVerify(msg, "We couldn't reach the server to verify. Please try again.");
+        }
+      }
+
+      async function sendStk() {
+        showWaiting();
+        try {
+          let paymentId = "demo";
+          if (API_BASE) {
+            const res = await fetch(`${API_BASE}/payments/stk-push`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                vehicle_id: order.v.id, from: order.from, to: order.to,
+                seats: order.qty, amount: order.total, phone: order.phone,
+              }),
+            });
+            if (!res.ok) {
+              const err = await res.json().catch(() => ({}));
+              throw new Error(err.message || "We couldn't send the M-Pesa request. Please try again.");
+            }
+            paymentId = (await res.json()).payment_id;
+          }
+          order.paymentId = paymentId;
+          pollPayment(paymentId);
+        } catch (e) {
+          showFailed(e.message || "We couldn't send the M-Pesa request. Please try again.");
+        }
+      }
+
+      function pollPayment(id) {
+        const started = Date.now();
+        const tick = async () => {
+          if (Date.now() - started > 90000) {
+            return showFailed("We didn't get a payment confirmation in time. If money was deducted, your ticket will arrive by SMS shortly. Otherwise, please try again.");
+          }
+          try {
+            let r;
+            if (!API_BASE) {
+              // Demo mode: pretend the customer paid after a few seconds.
+              r = Date.now() - started > 4000
+                ? { status: "paid", reference: "DEMO" + Math.random().toString(36).slice(2, 8).toUpperCase() }
+                : { status: "pending" };
+            } else {
+              const res = await fetch(`${API_BASE}/payments/${encodeURIComponent(id)}`);
+              if (!res.ok) throw new Error(res.status);
+              r = await res.json();
+            }
+            if (r.status === "paid") return showSuccess(r.reference);
+            if (r.status === "cancelled") return showFailed(r.message || "The payment request was cancelled on your phone.");
+            if (r.status === "failed") return showFailed(r.message || "The payment didn't go through. Please check your M-Pesa balance and try again.");
+          } catch (e) { /* temporary network error: keep polling */ }
+          order.timer = setTimeout(tick, 3000);
+        };
+        tick();
       }
 
       /* ===================== LOCATION ===================== */
@@ -311,36 +776,12 @@
         $("toCity").value = state.to;
       }
 
-      function nearestCity(lat, lng) {
-        let best = null, bestD = Infinity;
-        CITIES.forEach((c) => {
-          const d = (c.lat - lat) ** 2 + (c.lng - lng) ** 2;
-          if (d < bestD) { bestD = d; best = c; }
-        });
-        return best.name;
-      }
-
-      function detectCity() {
-        if (!navigator.geolocation) { $("locNote").textContent = "Location isn't supported on this device. Please choose your city manually."; return; }
-        $("locNote").textContent = "Detecting your location…";
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            const city = nearestCity(pos.coords.latitude, pos.coords.longitude);
-            $("fromCity").value = city;
-            $("locNote").textContent = `Nearest Safiri city: ${city}.`;
-            changeRoute();
-          },
-          () => { $("locNote").textContent = "Couldn't get your location. Please choose your city manually."; },
-          { timeout: 8000 }
-        );
-      }
-
       async function changeRoute() {
         state.from = $("fromCity").value;
         state.to = $("toCity").value;
         store("safiri_city", state.from);
         state.activeId = null;
-        state.selected.clear();
+        state.qty = 1;
         history.replaceState(null, "", `?from=${encodeURIComponent(state.from)}&to=${encodeURIComponent(state.to)}`);
         await refresh();
         renderSeats();
@@ -357,7 +798,6 @@
       $("fromCity").onchange = changeRoute;
       $("toCity").onchange = changeRoute;
       $("sortBy").onchange = renderList;
-      $("detectBtn").onclick = detectCity;
       renderSeats();
       refresh();
       setInterval(refresh, REFRESH_MS);
